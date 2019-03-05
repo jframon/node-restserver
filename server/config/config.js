@@ -12,5 +12,4 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
     urlDB = process.env.Mongo_Url;
 }
-
 process.env.urlDB = urlDB;
