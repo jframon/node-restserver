@@ -5,8 +5,6 @@ process.env.PORT = process.env.PORT || 8080;
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
 //DB
-
-
 let urlDB;
 
 if (process.env.NODE_ENV === 'dev') {
