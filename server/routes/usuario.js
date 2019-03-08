@@ -5,13 +5,13 @@ const _ = require('underscore');
 const app = express();
 const bodyParser = require('body-parser');
 const Usuario = require('../models/usuario');
-const { verificaToken, verificaRole } = require('../middleware/autenticacion')
+const { verificaToken, verificaRole } = require('../middleware/autenticacion');
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.get('/usuario', [verificaToken], function(req, res) {
     let desde = req.query.desde || 0;
@@ -62,14 +62,13 @@ app.post('/usuario', [verificaToken, verificaRole], function(req, res) {
             usuario: usuariodb
         })
 
-    });
+    }
+)
 });
 
 app.put('/usuario/:id', [verificaToken, verificaRole], function(req, res) {
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'img', 'email', 'role', 'estado']);
-
-
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true },
         (err, usuariodb) => {

@@ -17,8 +17,7 @@ let verificaToken = (req, res, next) => {
         req.usuario = decoded.usuario;
         next();
     })
-};
-
+}
 //Verifica Role
 let verificaRole = (req, res, next) => {
 
@@ -33,7 +32,6 @@ let verificaRole = (req, res, next) => {
                 message: 'El usuario no es administrador'
             }
         });
-    };
-};
-
+    }
+}
 module.exports = { verificaToken, verificaRole };
