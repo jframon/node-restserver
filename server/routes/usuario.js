@@ -5,22 +5,22 @@ const _ = require('underscore');
 const app = express();
 const bodyParser = require('body-parser');
 const Usuario = require('../models/usuario');
-const { verificaToken, verificaRole } = require('../middleware/autenticacion');
+const {verificaToken, verificaRole} = require('../middleware/autenticacion');
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 // parse application/json
 app.use(bodyParser.json());
 
-app.get('/usuario', [verificaToken], function(req, res) {
+app.get('/usuario', [verificaToken], function (req, res) {
     let desde = req.query.desde || 0;
     desde = Number(desde);
 
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({ estado: true }, 'nombre email role estado google img').limit(limite).skip(desde).exec((err, usuarios) => {
+    Usuario.find({estado: true}, 'nombre email role estado google img').limit(limite).skip(desde).exec((err, usuarios) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -28,7 +28,7 @@ app.get('/usuario', [verificaToken], function(req, res) {
             });
         }
 
-        Usuario.countDocuments({ estado: true }, (err, conteo) => {
+        Usuario.countDocuments({estado: true}, (err, conteo) => {
             res.json({
                 ok: true,
                 total: conteo,
@@ -38,7 +38,7 @@ app.get('/usuario', [verificaToken], function(req, res) {
     })
 });
 
-app.post('/usuario', [verificaToken, verificaRole], function(req, res) {
+app.post('/usuario', [verificaToken, verificaRole], function (req, res) {
     let body = req.body;
 
     let usuario = new Usuario({
@@ -49,28 +49,28 @@ app.post('/usuario', [verificaToken, verificaRole], function(req, res) {
     });
 
     usuario.save((err, usuariodb) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                mensaje: err
-            });
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: err
+                });
+            }
+
+
+            res.json({
+                ok: true,
+                usuario: usuariodb
+            })
+
         }
-
-
-        res.json({
-            ok: true,
-            usuario: usuariodb
-        })
-
-    }
-)
+    )
 });
 
-app.put('/usuario/:id', [verificaToken, verificaRole], function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaRole], function (req, res) {
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'img', 'email', 'role', 'estado']);
 
-    Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true },
+    Usuario.findByIdAndUpdate(id, body, {new: true, runValidators: true},
         (err, usuariodb) => {
 
             if (err) {
@@ -87,14 +87,12 @@ app.put('/usuario/:id', [verificaToken, verificaRole], function(req, res) {
         })
 });
 
-app.delete('/usuario/:id', verificaToken, function(req, res) {
+app.delete('/usuario/:id', verificaToken, function (req, res) {
     let id = req.params.id;
-
-
     // Borra Fisicamente de la Base de datos.
     // Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
 
-    Usuario.findByIdAndUpdate(id, { estado: false }, { new: true },
+    Usuario.findByIdAndUpdate(id, {estado: false}, {new: true},
         (err, usuarioBorrado) => {
             if (err) {
                 return res.status(400).json({

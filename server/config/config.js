@@ -5,7 +5,7 @@ process.env.PORT = process.env.PORT || 8080;
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
 //Vencimiento Token 60 Seg * 60 Min * 24 Horas * 30 Dias
-process.env.Caducidad_Token = 60 * 60 * 24 * 30;
+process.env.Caducidad_Token = '48h';
 
 //Seed Para los Tokens
 process.env.Seed = process.env.Seed || 'este-es-el-seed-desarrollo';
